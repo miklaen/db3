@@ -18,7 +18,7 @@ class SplattsController < ApplicationController
   # POST /splatts
   # POST /splatts.json
   def create
-    @splatt = Splatt.new(params[:splatt])
+    @splatt = Splatt.new(splatts_params(params[:splatt]))
 
     if @splatt.save
       render json: @splatt, status: :created, location: @splatt
