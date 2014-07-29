@@ -48,6 +48,12 @@ class UsersController < ApplicationController
     head :no_content
   end
 
+  def splatts
+    @user = User.find(params[:id])
+
+    render json: @user.splatts
+  end  
+
  private
 
   def user_params(params)
