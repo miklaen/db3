@@ -1,4 +1,4 @@
-Class CreateFollows < ActiveRecord::Migration
+class CreateFollows < ActiveRecord::Migration
   def change
     create_table :follows do |t|
       t.integer :follower_id, index: true
