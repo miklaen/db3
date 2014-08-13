@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Create 3 Users
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"test@foo.com", "name":"Test User", "password":"fooBar1!"}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"fighters@foo.com", "name":"John Doe", "password":"P@ssw0rd"}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"address@domain.com", "name":"Jimmy User", "password":"ICantR3member?"}}'
+
+# Create 5 splatts for each user
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":2}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Is there anybody out there?", "user_id":2}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":3}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"I believe you have my stapler", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Today I ate lunch. Here is a picture of my lunch.", "user_id":2}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Whats a splatter?", "user_id":3}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"help", "user_id":3}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"WHAT IS THE MEANING OF THIS??", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"please", "user_id":3}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"shit you cant add pictures. laaame", "user_id":2}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"im scared", "user_id":3}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"This sucks", "user_id":2}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hi guys.", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"OH GOD THERES SOMEONE IN MY HOUSE I THINK HES GOING TO KIL-", "user_id":1}}'
+
+# The first user follows the other 2
+
+
+# Gets the first user's splatts
+
+
+# Gets the users followed by the first user
+
+
+# Gets the first user's newsfeed
+
+
+# First user unfollows the third user
+
+
+# Gets the first user's newsfeed after unfollowing the third
