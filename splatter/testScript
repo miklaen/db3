@@ -5,11 +5,11 @@ curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:30
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"address@domain.com", "name":"Jimmy User", "password":"ICantR3member?"}}'
 
 # Create 5 splatts for each user
-curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":2}}'
-curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Is there anybody out there?", "user_id":2}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Is there anybody out there?", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":2}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Hello, Splatter world", "user_id":3}}'
-curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"I believe you have my stapler", "user_id":1}}'
+curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"I believe you have my stapler", "user_id":2}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Today I ate lunch. Here is a picture of my lunch.", "user_id":2}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"Whats a splatter?", "user_id":3}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/splatts -d '{"splatt": {"body":"help", "user_id":3}}'
@@ -24,19 +24,23 @@ curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:30
 # The first user follows the other 2
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users/follows -d '{"id":1, "follows_id":2}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users/follows -d '{"id":1, "follows_id":3}'
+read -p "Press [Enter] key to get the first user's splatts"
 
 # Gets the first user's splatts
 curl -i -H "Content-type: application/json" -X GET http://annan.sqrawler.com:3000/users/splatts/1
+read -p "Press [Enter] key to get the first user's follows"
 
 # Gets the users followed by the first user
 curl -i -H "Content-type: application/json" -X GET http://annan.sqrawler.com:3000/users/follows/1
+read -p "Press [Enter] key to get the first user's newsfeed"
 
 # Gets the first user's newsfeed
 curl -i -H "Content-type: application/json" -X GET http://annan.sqrawler.com:3000/users/splatts-feed/1
+read -p "Press [Enter] key to make the first user unfollow the third"
 
 # First user unfollows the third user
 curl -i -H "Content-type: application/json" -X DELETE http://annan.sqrawler.com:3000/users/follows/1/3
-
+read -p "Press [Enter] key to get the first user's new newsfeed"
 
 # Gets the first user's newsfeed after unfollowing the third
 curl -i -H "Content-type: application/json" -X GET http://annan.sqrawler.com:3000/users/splatts-feed/1
