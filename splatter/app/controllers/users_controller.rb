@@ -84,7 +84,7 @@ class UsersController < ApplicationController
   # DELETE /users/follows/1/2
   def delete_follows
     @user = User.find(params[:id])
-    @follows = User.find(params[follows_id])
+    @follows = User.find(params[:follows_id])
 
     if @user.follows.delete(@follows)
       head :no_content
