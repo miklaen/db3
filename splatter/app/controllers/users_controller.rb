@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :set_headers
   # GET /users
   # GET /users.json
   def index
@@ -103,5 +104,9 @@ class UsersController < ApplicationController
  private
   def user_params(params)
    params.permit( :email, :password, :name, :blurb)
+  end
+
+  def set_headers
+	headers['Access-Control-Allow-Origin'] = '*';
   end
 end
