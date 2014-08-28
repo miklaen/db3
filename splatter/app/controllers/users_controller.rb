@@ -107,6 +107,6 @@ class UsersController < ApplicationController
   end
 
   def set_headers
-	headers['Access-Control-Allow-Origin'] = '*';
+    headers['Access-Control-Allow-Origin'] = '*'
   end
 end
