@@ -2,111 +2,101 @@
 <meta charset="UTF-8">
 <html ng-app="splatter-web">
 	<head>
-		<title>Splatter</title>
+		<title>Basic Splatter Client</title>
 		<script src="angular.min.js"></script>
 		<script src="angular-resource.js"></script>
 		<script src="app.js"></script>
         <link rel="stylesheet" type="text/css" href="splatter.css">       
 	</head>
 	<body>
-		<div ng-controller="UserController as user">
-			<!-- Add your HTML and Angular code below -->
-			
-			<!--users details -->
-            <p>{{user.hello}}</p>
-			<p>{{user.u.name}}</p>
-			<p>{{user.u.email}}</p>
-			<p>{{user.u.blurb}}</p>
-			<!--users details end-->
-			
-            <!--login form-->
-			<div>
-				{{user.u.name}} id: {{user.u.id}}
+		<div ng-controller="UserController as user">			
+			<div class="mydiv">
+				<!-- Current user's details -->
+				<h3>Current User</h3>
+				<p>ID:	{{user.u.id}}</p>
+				<p>Name: {{user.u.name}} </p>
+				<p>Email: {{user.u.email}}</p>
+				<p>Blurb: {{user.u.blurb}}</p>
 				
-				<h3>Sign in</h3>			
-				<form ng-controller="UpdateFormController as form" ng-submit="form.updateUser(user)">
-					id<input ng-model="form.data.name" type="text" />
-					<input type="submit" value="Login"/>
+				<!-- Login -->			
+				<form ng-controller="LoginController as form" ng-submit="form.updateUser(user)">
+					<h3>Login</h3>
+					<p>ID: <input ng-model="form.data.name" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Login"/></p>
 				</form>
-				
-            	<h3>Show users splatts</h3>			
+
+				<!-- Current user's splatts feed -->
 				<form ng-controller="ShowSplattsController as form" ng-submit="form.updateFeed(user)">
-					id<input ng-model="form.data.id" type="text" />
-					<input type="submit" value="Show"/>
-				</form>
-            
-				<div ng-repeat="splatt in usersfeed.splatt">
-					<p> </p>
-					<h2>{{splatt.users_name}}</h2>
-					<p>{{splatt.message}}</p>
-					<p>{{splatt.created | date: 'dd/MM/yyyy h:mma'}}</p>
-				</div>			
+					<h3>View Splatts Feed</h3>
+					<p>ID: <input ng-model="form.data.id" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Show"/></p>
+				</form>						
 				
-				<h3>Delete User</h3>			
-				<form ng-controller="DeleteUserController as form" ng-submit="form.deleteUser(user)">
-					id<input ng-model="form.data.id" type="text" />
-					<input type="submit" value="Delete"/>
-				</form>
-				<h3>Update Details</h3>			
+				<!-- Update current user's details -->				
 				<form ng-controller="UpdateUserController as form" ng-submit="form.updateUser(user)">
-					name<input ng-model="form.data.name" type="text" />
-					blurb<input ng-model="form.data.blurb" type="text" />
-					<input type="submit" value="Update"/>
+					<h3>Update Details</h3>	
+					<p>Name: <input ng-model="form.data.name" type="text" placeholder="John Doe" /> <br/>
+					Blurb: <textarea ng-model="form.data.blurb" placeholder="Something about yourself" ></textarea> <br/>
+					<input type="submit" value="Update"/></p>
 				</form>
 				
-				
-				<h3>Post Splatt</h3>			
-				<form ng-controller="AddSplattController as form" ng-submit="form.addSplatt(user)">
-					Splatt<input ng-model="form.data.splatt" type="text" />
-					<input type="submit" value="Post"/>
-				</form>
-
-
-				<h3>Create User</h3>
+				<!-- Create new user -->
 				<form ng-controller="NewUserFormController as form" ng-submit="form.newUser(user)">
-					Name<input ng-model="form.data.name" type="text"/><br/>
-					Email<input ng-model="form.data.email" type="text"/><br/>
-					Password<input ng-model="form.data.password" type="text"/><br/>
-					Blurb<input ng-model="form.data.blurb" type="text"/><br/>
-					<input type="submit" value="Create"/>
+					<h3>Create User</h3>
+					<p>Name: <input ng-model="form.data.name" type="text" placeholder="John Doe" /> <br/>
+					Email: <input ng-model="form.data.email" type="text" placeholder="address@domain.com" /> <br/>
+					Password: <input ng-model="form.data.password" type="password"/> <br/>
+					Blurb: <textarea ng-model="form.data.blurb" placeholder="Something about yourself" ></textarea> <br/>
+					<input type="submit" value="Create"/></p>
+				</form>
+					
+				<!-- Follow a user -->			
+				<form ng-controller="FollowUserController as form" ng-submit="form.followUser(user)">
+					<h3>Follow User</h3>
+					<p>Follow: <input ng-model="form.data.follows" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Follow"/></p>
 				</form>
 				
-				<h3>Follow User</h3>
-				<form ng-controller="FollowUserController as form" ng-submit="form.followUser(user)">
-					follow<input ng-model="form.data.follows" type="text"/><br/>
-
-					<input type="submit" value="Follow"/>
-				</form>
-				<h3>Unfollow User</h3>
+				<!-- Unfollow a user -->
 				<form ng-controller="UnfollowUserController as form" ng-submit="form.unfollowUser(user)">
-					follow<input ng-model="form.data.follows" type="text"/><br/>
-
-					<input type="submit" value="Unfollow"/>
-				</form>          
+					<h3>Unfollow User</h3>
+					<p>Unfollow: <input ng-model="form.data.follows" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Unfollow"/></p>
+				</form> 
+				
+				<!-- Delete user -->		
+				<form ng-controller="DeleteUserController as form" ng-submit="form.deleteUser(user)">
+					<h3>Delete User</h3>	
+					<p>ID: <input ng-model="form.data.name" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Delete"/></p>
+				</form>
+					
+				<!-- Post a splatt -->	
+				<form ng-controller="AddSplattController as form" ng-submit="form.addSplatt(user)">
+					<h3>Post Splatt</h3>
+					<p>Splatt: <input ng-model="form.data.splatt" type="text" placeholder="Text goes here" />
+					<input type="submit" value="Post"/></p>
+				</form>	
+				
+       			<!-- View a user's splatts -->	
+				<form ng-controller="ShowSplattsController as form" ng-submit="form.updateSplatts(user)">
+					<h3>View User's Splatts</h3>
+					<p>ID: <input ng-model="form.data.id" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Show"/></p>
+				</form>				
 			</div>
-            
-            
-            
-            <!--login form end-->
-            
-            
 			
-			<br/>
-            <br/>
-            <br/>
-			<!-- splatts feed-->
-			<div ng-repeat="splatt in user.feed.splatt">
+			<!-- Selected user's splatts-->
+			<div class="mydiv" ng-repeat="splatt in user.feed.splatt">
             	<p> </p>
-                 <h2>{{splatt.user_id}}</h2>
+                 <h3>User ID: {{splatt.user_id}}</h3>
 				<p>{{splatt.body}}</p>
 				<p>{{splatt.created_at | date: 'dd/MM/yyyy h:mma'}}</p>
                 
-                <h2>{{splatt.users_name}}</h2>
+                <h3>{{splatt.users_name}}</h3>
 				<p>{{splatt.message}}</p>
 				<p>{{splatt.created | date: 'dd/MM/yyyy h:mma'}}</p>
 			</div>
-            <!--Splatts feed end -->
-                <!-- Add your HTML and Angular code above -->
 
 		</div>
 	</body>

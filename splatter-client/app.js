@@ -1,10 +1,8 @@
 (function() { // We use this anonymous function to create a closure.
 
 	var app = angular.module('splatter-web', ['ngResource']);
-	//window.showfeed = "";
 
-	app.factory('User', function($resource, $http) 
-	{
+	app.factory('User', function($resource) {
 		return $resource('http://annan.sqrawler.com/api/users/:id.json',{},{
 		update: {method:'PUT'},
 		follow: {method:'POST', url:'http://annan.sqrawler.com/api/users/follows/'},
@@ -12,40 +10,46 @@
 		unfollow: {method:'DELETE', url:'http://annan.sqrawler.com/api/users/follows/:id/:follows_id'}})
 	});
 	
-	app.factory('SplattsFeed', function($resource) 
-	{
+	app.factory('SplattsFeed', function($resource) {
 		return $resource('http://annan.sqrawler.com/api/users/splatts-feed/:id.json',{},{
+		getfeed: {method:'GET',url:'http://annan.sqrawler.com/api/users/splatts-feed/:id.json', isArray:true},
 		getsplatts: {method:'GET',url:'http://annan.sqrawler.com/api/users/splatts/:id.json', isArray:true}});
 	});
 
-	app.controller('UserController', function(User, SplattsFeed) 
-	{
-    	// add your user code below
-		//this.u = User.get({id: 1})
-		//this.hello = "Hello, world";
-		//this.feed = SplattsFeed.get({id: 1},function (data) {
-			//console.log(data.splatt);
-			//return (data.splatt)});
-			//write the user to the console
-					
-		// add your user code above	
-	});
+	app.controller('UserController', function(User, SplattsFeed) {});
 	
-	app.controller("ShowSplattsController", function(User, SplattsFeed) 
-		{
+	app.controller("LoginController", function(User, SplattsFeed) {
+		this.data = {};
+		this.updateUser = function(user) 
+		{			
+			//Set the user from the api
+			newUser = User.get({id: this.data.name});
+			//Set the news feed from the api
+			newFeed = SplattsFeed.get({id: this.data.name});
+			//Set the user and feed to be the user we just got
+			user.u = newUser;
+			user.feed = newFeed;
+			SplattsFeed.getfeed({id: this.data.id})
+			.$promise.then(function(value){user.feed.splatt = value});
+			this.data = {} // clear the form
+		}
+	});	
+		
+	app.controller("ShowSplattsController", function(User, SplattsFeed) {
 		this.data = {};
 		this.updateFeed = function(user) 
 		{			
+			SplattsFeed.getfeed({id: this.data.id})
+			.$promise.then(function(value){user.feed.splatt = value});
+			this.data = {} // clear the form		
+		}
+		this.updateSplatts = function(user) 
+		{			
 			SplattsFeed.getsplatts({id: this.data.id})
-			.$promise.then(
-        //success
-			function( value ){user.feed.splatt = value});
-			this.data = {} //clears the form}
-			//Set the user and feed to be the user we just got
-			
+			.$promise.then(function(value){user.feed.splatt = value});
+			this.data = {} // clear the form		
 		}
 	});	
-
 	
 	app.controller("DeleteUserController", function(User) 
 	{
@@ -54,12 +58,11 @@
 		{	
 			deleteId = this.data.id;			
 			User.delete({id: deleteId});
-			this.data = {} //clears the form
+			this.data = {} // clear the form
 		}
 	});	
 
-	app.controller("UpdateUserController", function(User) 
-	{	
+	app.controller("UpdateUserController", function(User) {	
 		this.data = {};
 		this.updateUser = function(user) 
 		{	
@@ -72,69 +75,39 @@
 			User.update({id: user.u.id},postData);
 			this.data = {} //clears the form
 		}
-	}
-	);
+	});
 	
-	app.controller("AddSplattController", function(User) 
-	{	
+	app.controller("AddSplattController", function(User) {	
 		this.data = {};
-		this.addSplatt = function(user) 
-		{	
+		this.addSplatt = function(user) {	
 			postData = {"splatt":{
 				"body": this.data.splatt, 
   				"user_id": user.u.id 
 			}}
-			
-				
+					
 			User.addsplatt({},postData);
 			this.data = {} //clears the form
 		}
-	}
-	);
+	});
 	
-		app.controller("FollowUserController", function(User) 
-	{	
+		app.controller("FollowUserController", function(User) {	
 		this.data = {};
-		this.followUser = function(user) 
-		{	
+		this.followUser = function(user) {	
 			followUserData = {"id": user.u.id,"follows_id": this.data.follows}
 			User.follow({},followUserData);
 			this.data = {} //clears the form
 		}
-	}
-	);
+	});
 	
-		app.controller("UnfollowUserController", function(User) 
-	{	
+	app.controller("UnfollowUserController", function(User) {	
 		this.data = {};
-		this.unfollowUser = function(user) 
-		{	
+		this.unfollowUser = function(user) {	
 			User.unfollow({id: user.u.id,follows_id: this.data.follows},{});
 			this.data = {} //clears the form
 		}
-	}
-	);
-	
-	
-	// add your form controller below
-	app.controller("UpdateFormController", function(User, SplattsFeed) 
-	{
-		this.data = {};
-		this.updateUser = function(user) 
-		{			
-			//Set the user from the api
-			newUser = User.get({id: this.data.name});
-			//Set the news feed from the api
-			newFeed = SplattsFeed.get({id: this.data.name});
-			//Set the user and feed to be the user we just got
-			user.u = newUser;
-			user.feed = newFeed;
-			this.data = {} //clears the form
-		}
-	});	
-	
-	app.controller("NewUserFormController", function(User, $http) 
-	{
+	});
+		
+	app.controller("NewUserFormController", function(User, $http) {
 		this.data = {};
 		this.newUser = function(user) 
 		{	
@@ -147,8 +120,7 @@
 			
 			
 			 User.save(postData);
-			this.data = {} //clears the form
+			this.data = {} // clear the form
 		}
 	});	
-    // add your form controller above
 })();

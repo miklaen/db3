@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/ruby
+
+rake db:reset
 #Create 3 Users
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"test@foo.com", "name":"Test User", "password":"fooBar1!"}}'
 curl -i -H "Content-type: application/json" -X POST http://annan.sqrawler.com:3000/users -d '{"user": {"email":"fighters@foo.com", "name":"John Doe", "password":"P@ssw0rd"}}'
