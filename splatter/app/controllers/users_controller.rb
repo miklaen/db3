@@ -75,8 +75,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @follows = User.find(params[:follows_id])
 
-    if @user.follows << @follows
-      head :no_content
+    if @user.follows << @follows and @follows.followers << @user
+      render json: @user.follows
     else
       render json: @user.errors, status: :unprocessable_entity
     end
