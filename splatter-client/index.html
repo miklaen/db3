@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html ng-app="splatter-web">
+	<head>
+		<title>Basic Splatter Client</title>
+		<script src="angular.min.js"></script>
+		<script src="angular-resource.js"></script>
+		<script src="app.js"></script>
+        <link rel="stylesheet" type="text/css" href="splatter.css">       
+	</head>
+	<body>
+		<div ng-controller="UserController as user">			
+			<div class="mydiv">
+				<!-- Current user's details -->
+				<h3>Current User</h3>
+				<p>ID:	{{user.u.id}}</p>
+				<p>Name: {{user.u.name}} </p>
+				<p>Email: {{user.u.email}}</p>
+				<p>Blurb: {{user.u.blurb}}</p>
+				
+				<!-- Login -->			
+				<form ng-controller="LoginController as form" ng-submit="form.updateUser(user)">
+					<h3>Login</h3>
+					<p>ID: <input ng-model="form.data.name" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Login"/></p>
+				</form>
+
+				<!-- Current user's splatts feed -->
+				<form ng-controller="ShowSplattsController as form" ng-submit="form.updateFeed(user)">
+					<h3>View Splatts Feed</h3>
+					<p>ID: <input ng-model="form.data.id" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Show"/></p>
+				</form>						
+				
+				<!-- Update current user's details -->				
+				<form ng-controller="UpdateUserController as form" ng-submit="form.updateUser(user)">
+					<h3>Update Details</h3>	
+					<p>Name: <input ng-model="form.data.name" type="text" placeholder="John Doe" /> <br/>
+					Blurb: <textarea ng-model="form.data.blurb" placeholder="Something about yourself" ></textarea> <br/>
+					<input type="submit" value="Update"/></p>
+				</form>
+				
+				<!-- Create new user -->
+				<form ng-controller="AddUserController as form" ng-submit="form.newUser(user)">
+					<h3>Create User</h3>
+					<p>Name: <input ng-model="form.data.name" type="text" placeholder="John Doe" /> <br/>
+					Email: <input ng-model="form.data.email" type="text" placeholder="address@domain.com" /> <br/>
+					Password: <input ng-model="form.data.password" type="password"/> <br/>
+					Blurb: <textarea ng-model="form.data.blurb" placeholder="Something about yourself" ></textarea> <br/>
+					<input type="submit" value="Create"/></p>
+				</form>
+					
+				<!-- Follow a user -->			
+				<form ng-controller="FollowUserController as form" ng-submit="form.followUser(user)">
+					<h3>Follow User</h3>
+					<p>Follow: <input ng-model="form.data.follows" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Follow"/></p>
+				</form>
+				
+				<!-- Unfollow a user -->
+				<form ng-controller="UnfollowUserController as form" ng-submit="form.unfollowUser(user)">
+					<h3>Unfollow User</h3>
+					<p>Unfollow: <input ng-model="form.data.follows" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Unfollow"/></p>
+				</form> 
+				
+				<!-- Delete user -->		
+				<form ng-controller="DeleteUserController as form" ng-submit="form.deleteUser(user)">
+					<h3>Delete User</h3>	
+					<p>ID: <input ng-model="form.data.name" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Delete"/></p>
+				</form>
+					
+				<!-- Post a splatt (not working) -->	
+				<form ng-controller="AddSplattController as form" ng-submit="form.addSplatt(user)">
+					<h3>Post Splatt</h3>
+					<p>Splatt: <input ng-model="form.data.splatt" type="text" placeholder="Text goes here" />
+					<input type="submit" value="Post"/></p>
+				</form>	
+				
+       			<!-- View a user's splatts -->	
+				<form ng-controller="ShowSplattsController as form" ng-submit="form.updateSplatts(user)">
+					<h3>View User's Splatts</h3>
+					<p>ID: <input ng-model="form.data.id" type="text" placeholder="eg. 1" />
+					<input type="submit" value="Show"/></p>
+				</form>				
+			</div>
+			
+			<!-- Selected user's splatts-->
+			<div class="mydiv" ng-repeat="splatt in user.feed.splatt">
+                <h3>User ID: {{splatt.user_id}}</h3>
+				<p>{{splatt.body}}</p>
+				<p>{{splatt.created_at | date: 'dd/MM/yyyy h:mma'}}</p>
+			</div>
+		</div>
+	</body>
+</html>
+

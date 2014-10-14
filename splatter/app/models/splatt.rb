@@ -1,6 +1,6 @@
-class Splatt < ActiveRecord::Base
-  belongs_to :user
-
-  validates :body, presence: true
-  validates :belongs_to, presence: true
+class Splatt
+  include Mongoid::Document
+  include Mongoid::Timestamps::Created
+  field :body, type: String
+  embedded_in :user
 end
