@@ -53,7 +53,10 @@ class UsersController < ApplicationController
   def splatts
     @user = User.find(params[:id])
 
-    render json: @user.splatts
+    if @user.splatts
+      render json: @user.splatts
+    else
+      render json: @user.errors, status: :unprocessable_entity
   end  
 
   # GET /users/follows/[:id]
@@ -96,14 +99,40 @@ class UsersController < ApplicationController
 
   # GET /users/splatts-feed/1
   def splatts_feed
-    @feed = Splatt.find_by_sql("SELECT splatts.body, splatts.user_id, splatts.created_at FROM splatts JOIN follows ON follows.followed_id=splatts.user_id WHERE follows.follower_id=#{params[:id]} ORDER BY created_at DESC")
+    map = %Q{ function() {
+      if(this.splatts) {
+        emit("feed", {"list": this.splatts})
+      }
+    }
+    }
 
-    render json: @feed
+    reduce = %Q{ function(key, values) {
+      var myfeed = {"list": []};
+      values.forEach(function(v) {
+        myfeed.list = myfeed.list.concat(v.list);
+      });
+      return myFeed;
+    }
+    }
+
+    finalise = %Q{function(key, val) {
+      var mylist = val.list;
+      if(mylist) {
+        mylist.sort(function(a, b) {
+          return b.created_at - a.created_at});
+      }
+      return {"list": mylist};
+    }
+    }
+
+    user = User.find(params[:id])
+    result = User.in(id: user.follow_ids).map_reduce(map, reduce).out(inline:true).finalize(finalise)
+    render json: result.entries[0][:value][:list]
   end
 
  private
   def user_params(params)
-   params.permit( :email, :password, :name, :blurb)
+    params.permit( :email, :password, :name, :blurb)
   end
 
   def set_headers
