@@ -1,6 +1,5 @@
-class Splatt < ActiveRecord::Base
-  belongs_to :user
-
-  validates :body, presence: true
-  validates :belongs_to, presence: true
+class Splatt < Hashie::Dash
+  property :id
+  property :body
+  property :created_at
 end
