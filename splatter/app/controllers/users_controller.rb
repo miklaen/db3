@@ -57,9 +57,11 @@ class UsersController < ApplicationController
 
   # GET /users/splatts/[:id]
   def splatts
-    @user = User.find(params[:id])
+    db = UserRepository.new(Riak::Client.new)    
+    @user = db.find(params[:id])
+    db = SplattsRepository.new(Riak::Client.new, @user)
 
-    render json: @user.splatts
+    render json: db.all
   end  
 
   # GET /users/follows/[:id]
@@ -78,13 +80,14 @@ class UsersController < ApplicationController
 
   # POST /users/follows
   def add_follows
-    @user = User.find(params[:id])
-    @follows = User.find(params[:follows_id])
+    db = UserRepository.new(Riak::Client.new)
+    @follower = db.find(params[:id])
+    @followed = db.find(params[:follows_id])
 
-    if @user.follows << @follows
+    if @db.follow(@follower, @followed)
       head :no_content
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: "error saving follow relationship" , status: :unprocessable_entity
     end
   end
 

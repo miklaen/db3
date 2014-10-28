@@ -48,4 +48,21 @@ class UserRepository
     if users.exists?(key)
       riak_obj
   end
+
+  def follow(follower, followed)
+    if follower.follows
+      follower.follows << followed.email
+    else
+      follower.followed = [followed.email]
+    end
+
+    if followed.followers
+      followed.followers << follower.email
+    else
+      followed.followers = [follows.email]
+    end
+
+    update(followed)
+    update(follower)
+  end
 end
