@@ -66,7 +66,8 @@ class UsersController < ApplicationController
 
   # GET /users/follows/[:id]
   def show_follows
-    @user = User.find(params[:id])
+    db = UserRepository.new(Riak::Client.new)
+    @user = db.find(params[:id])
 
     render json: @user.follows
   end
@@ -93,13 +94,14 @@ class UsersController < ApplicationController
 
   # DELETE /users/follows/1/2
   def delete_follows
-    @user = User.find(params[:id])
-    @follows = User.find(params[:follows_id])
+    db = UserRepository.new(Riak::Client.new)
+    @follower = db.find(params[:id])
+    @followed = db.find(params[:follows_id])
 
-    if @user.follows.delete(@follows)
+    if @db.unfollow(@follower, @followed)
       head :no_content
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: "error saving unfollow relationship" , status: :unprocessable_entity
     end
   end
 
